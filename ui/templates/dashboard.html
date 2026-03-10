@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<title>AI Companion Dashboard</title>
+
+<style>
+
+body{
+font-family: Arial;
+background:#f5f5f5;
+}
+
+.container{
+width:900px;
+margin:auto;
+margin-top:40px;
+}
+
+.panel{
+background:white;
+padding:20px;
+margin-bottom:20px;
+border-radius:8px;
+box-shadow:0px 2px 4px rgba(0,0,0,0.1);
+}
+
+h2{
+margin-top:0;
+}
+
+.timeline-item{
+padding:6px 0;
+border-bottom:1px solid #eee;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="container">
+
+<h1>AI Companion Dashboard</h1>
+
+
+<div class="panel">
+
+<h2>Character</h2>
+
+<p>Name: <span id="character"></span></p>
+
+</div>
+
+
+<div class="panel">
+
+<h2>Relationship</h2>
+
+<p>Affection: <span id="affection"></span></p>
+<p>Stage: <span id="stage"></span></p>
+
+</div>
+
+
+<div class="panel">
+
+<h2>State</h2>
+
+<p>Mood: <span id="mood"></span></p>
+<p>Energy: <span id="energy"></span></p>
+<p>Stress: <span id="stress"></span></p>
+
+</div>
+
+
+<div class="panel">
+
+<h2>Life</h2>
+
+<p>Location: <span id="location"></span></p>
+<p>Activity: <span id="activity"></span></p>
+
+</div>
+
+
+<div class="panel">
+
+<h2>Time</h2>
+
+<p>Current Time: <span id="time"></span></p>
+
+</div>
+
+
+<div class="panel">
+
+<h2>Life Timeline</h2>
+
+<div id="timeline"></div>
+
+</div>
+
+
+</div>
+
+
+<script>
+
+
+async function loadState(){
+
+const response = await fetch("/api/state")
+
+const data = await response.json()
+
+document.getElementById("character").innerText = data.character
+document.getElementById("affection").innerText = data.affection_score
+document.getElementById("stage").innerText = data.relationship_stage
+document.getElementById("mood").innerText = data.mood
+document.getElementById("energy").innerText = data.energy
+document.getElementById("stress").innerText = data.stress
+document.getElementById("location").innerText = data.location
+document.getElementById("activity").innerText = data.activity
+document.getElementById("time").innerText = data.current_time
+
+}
+
+
+async function loadTimeline(){
+
+const response = await fetch("/api/life")
+
+const data = await response.json()
+
+const container = document.getElementById("timeline")
+
+container.innerHTML = ""
+
+data.forEach(item => {
+
+const div = document.createElement("div")
+
+div.className = "timeline-item"
+
+div.innerText = item.time + "  " + item.event + " (" + item.location + ")"
+
+container.appendChild(div)
+
+})
+
+}
+
+
+setInterval(loadState,2000)
+
+loadState()
+
+loadTimeline()
+
+</script>
+
+</body>
+</html>
