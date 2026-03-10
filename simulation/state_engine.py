@@ -1,27 +1,29 @@
 import random
 
-def update_mood(current_mood, stress):
-    change = random.uniform(-0.1,0.1)
 
-    if stress > 0.7:
-        change -= 0.1
+def update_mood(mood, activity):
 
-    new_mood = current_mood + change
+    if activity == "運動":
+        mood += 0.2
 
-    return max(-1,min(1,new_mood))
+    if activity == "在醫院工作":
+        mood -= random.uniform(0.05, 0.1)
 
+    if activity == "睡覺":
+        mood += 0.1
 
-def update_energy(current_energy):
-    drain = random.uniform(0.05,0.1)
-
-    new_energy = current_energy - drain
-
-    return max(0,new_energy)
+    return max(-1, min(1, mood))
 
 
-def update_stress(current_stress):
-    change = random.uniform(-0.05,0.1)
+def update_energy(energy, activity):
 
-    new_stress = current_stress + change
+    if activity == "睡覺":
+        energy += 0.3
 
-    return max(0,min(1,new_stress))
+    if activity == "在醫院工作":
+        energy -= 0.1
+
+    if activity == "運動":
+        energy -= 0.15
+
+    return max(0, min(1, energy))
