@@ -1,11 +1,14 @@
 import datetime
 
+from simulation.activity_engine import get_current_activity
+
 
 class StateManager:
 
     def __init__(self):
 
         self.state = {
+
             "character": "許然",
 
             "affection_score": 70,
@@ -21,7 +24,9 @@ class StateManager:
             "last_event": "無",
 
             "current_time": self.get_time()
+
         }
+
 
     def get_time(self):
 
@@ -29,7 +34,19 @@ class StateManager:
 
         return now.strftime("%Y-%m-%d %H:%M")
 
+
+    def update_activity(self):
+
+        event = get_current_activity()
+
+        self.state["activity"] = event["event"]
+
+        self.state["location"] = event["location"]
+
+
     def get_state(self):
+
+        self.update_activity()
 
         self.state["current_time"] = self.get_time()
 
