@@ -2,11 +2,9 @@ import datetime
 from simulation.life_timeline import life_timeline
 
 
-def get_current_activity():
+def get_current_activity(current_time_str):
 
-    now = datetime.datetime.now()
-
-    current_time = datetime.datetime.strptime(now.strftime("%H:%M"), "%H:%M")
+    current_time = datetime.datetime.strptime(current_time_str, "%H:%M")
 
     timeline = life_timeline.get_timeline()
 

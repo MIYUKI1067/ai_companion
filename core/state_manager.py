@@ -8,6 +8,8 @@ class StateManager:
 
     def __init__(self):
 
+        self.override_time = None
+
         self.state = {
 
             "character": "許然",
@@ -31,14 +33,31 @@ class StateManager:
 
     def get_time(self):
 
+        if self.override_time:
+            return self.override_time
+
         now = datetime.datetime.now()
 
         return now.strftime("%Y-%m-%d %H:%M")
 
 
+    def get_time_hm(self):
+
+        time_str = self.get_time()
+
+        return time_str.split(" ")[1]
+
+
+    def set_time(self, new_time):
+
+        self.override_time = new_time
+
+
     def update_activity(self):
 
-        event = get_current_activity()
+        current_time = self.get_time_hm()
+
+        event = get_current_activity(current_time)
 
         self.state["activity"] = event["event"]
 
@@ -48,6 +67,12 @@ class StateManager:
     def update_state(self):
 
         self.state = simulate_state(self.state)
+
+
+    def set_state_value(self, key, value):
+
+        if key in self.state:
+            self.state[key] = value
 
 
     def get_state(self):
