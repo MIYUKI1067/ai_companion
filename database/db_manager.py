@@ -29,3 +29,19 @@ def save_message(speaker, message):
     )
     conn.commit()
     conn.close()
+
+def get_recent_messages(limit=6):
+
+    conn = get_conn()
+    cur = conn.cursor()
+
+    cur.execute(
+        "SELECT speaker,message FROM conversation ORDER BY id DESC LIMIT ?",
+        (limit,)
+    )
+
+    rows = cur.fetchall()
+
+    conn.close()
+
+    return rows[::-1]
