@@ -6,16 +6,33 @@ def get_current_activity():
 
     now = datetime.datetime.now()
 
-    current_time = now.strftime("%H:%M")
+    current_time = datetime.datetime.strptime(now.strftime("%H:%M"), "%H:%M")
 
     timeline = life_timeline.get_timeline()
 
-    current_event = timeline[0]
+    events = []
 
     for item in timeline:
 
-        if item["time"] <= current_time:
+        event_time = datetime.datetime.strptime(item["time"], "%H:%M")
 
-            current_event = item
+        events.append((event_time, item))
+
+    events.sort(key=lambda x: x[0])
+
+    current_event = events[-1][1]
+
+    for i in range(len(events)):
+
+        event_time, event = events[i]
+
+        if current_time < event_time:
+
+            if i == 0:
+                current_event = events[-1][1]
+            else:
+                current_event = events[i-1][1]
+
+            break
 
     return current_event
