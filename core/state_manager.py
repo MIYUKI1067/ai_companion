@@ -1,6 +1,7 @@
 import datetime
 
 from simulation.activity_engine import get_current_activity
+from simulation.state_simulator import simulate_state
 
 
 class StateManager:
@@ -44,9 +45,16 @@ class StateManager:
         self.state["location"] = event["location"]
 
 
+    def update_state(self):
+
+        self.state = simulate_state(self.state)
+
+
     def get_state(self):
 
         self.update_activity()
+
+        self.update_state()
 
         self.state["current_time"] = self.get_time()
 
