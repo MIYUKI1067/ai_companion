@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+<title>AI Companion</title>
+
+<style>
+
+body{
+font-family:Arial;
+background:#f2f2f2;
+}
+
+#chatbox{
+width:600px;
+height:500px;
+margin:auto;
+background:white;
+padding:20px;
+overflow-y:scroll;
+border-radius:10px;
+}
+
+.message{
+margin:10px;
+}
+
+.user{
+text-align:right;
+color:blue;
+}
+
+.ai{
+text-align:left;
+color:black;
+}
+
+#input{
+width:600px;
+margin:auto;
+display:flex;
+}
+
+#inputbox{
+flex:1;
+padding:10px;
+}
+
+button{
+padding:10px;
+}
+
+</style>
+
+</head>
+
+
+<body>
+
+<h2 style="text-align:center">AI Companion</h2>
+
+<div id="chatbox"></div>
+
+<div id="input">
+
+<input id="inputbox" placeholder="說點什麼...">
+
+<button onclick="send()">送出</button>
+
+</div>
+
+<script>
+
+async function send(){
+
+let text=document.getElementById("inputbox").value
+
+let chatbox=document.getElementById("chatbox")
+
+chatbox.innerHTML+=`<div class="message user">${text}</div>`
+
+document.getElementById("inputbox").value=""
+
+let res=await fetch("/chat",{
+method:"POST",
+headers:{
+"Content-Type":"application/json"
+},
+body:JSON.stringify({text:text})
+})
+
+let data=await res.json()
+
+chatbox.innerHTML+=`<div class="message ai">${data.reply}</div>`
+
+chatbox.scrollTop=chatbox.scrollHeight
+
+}
+
+</script>
+
+</body>
+
+</html>

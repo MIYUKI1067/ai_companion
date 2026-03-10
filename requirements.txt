@@ -1,3 +1,6 @@
 openai
 python-dotenv
 sqlite-utils
+fastapi
+uvicorn
+jinja2
